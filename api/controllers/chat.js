@@ -38,7 +38,7 @@ const accessChat = async(req, res) => {
             }
         }
     } catch (error) {
-        console.log(error)
+        res.status(400).json(error.message)
     }
     
 }
@@ -142,7 +142,7 @@ const removeFromGroup = async(req, res) => {
             res.json(removed);
         }
     } catch (error) {
-        res.status(404).json
+        res.status(400).json(error.message)
     }
 }
 
@@ -170,7 +170,7 @@ const addToGroup = async(req, res) => {
             res.json(added);
         }
     } catch (error) {
-        res.status(404).json
+        res.status(400).json(error.message)
     }
 }
 

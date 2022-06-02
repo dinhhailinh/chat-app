@@ -43,7 +43,6 @@ const Signup = () => {
       });
       return;
     }
-    console.log(name, email, password, pic);
     try {
       const config = {
         headers: {
@@ -51,7 +50,7 @@ const Signup = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/user/register",
+        `${process.env.REACT_APP_BASE_URL}/api/user/register`,
         {
           name,
           email,

@@ -1,0 +1,54 @@
+version: '3'
+networks:
+  chat-app:
+    driver: bridge
+    
+services:
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+      - mongo-prod
+    ports:
+      - "3000:3000"
+    restart: always
+    env_file: 
+      - ./client/client.env
+    networks:
+      - chat-app
+    volumes: 
+      - ./client:/app #Synchronise docker container with local change
+      - /app/node_modules
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo-prod
+    ports:
+      - "5000:5000"
+    restart: always
+    networks:
+      - chat-app
+    volumes: 
+      - ./api:/app
+      - /app/node_modules
+    environment:
+      - MONGO_URI=mongodb+srv://DinhLinh:hailinh211176@cluster0.vgfvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+      - JWT_SECRET=my_chat-app
+    env_file: ./api/.env
+  mongo-prod:
+    image: mongo:latest
+    ports:
+      - "20717:20717"
+    networks:
+      - chat-app 
+    volumes:
+      - data:/var/lib/mysql
+volumes:
+  data: {}
+
